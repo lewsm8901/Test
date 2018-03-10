@@ -1,0 +1,35 @@
+[0m[[0m[0minfo[0m] [0m[0mPackaging /Users/SoungmokLew/Desktop/Test/target/scala-2.11/test_2.11-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$delayedInit$body.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$6.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$5.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$cvol$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$cvol$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$pvol$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$pvol$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$pvol$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$pvol$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$8.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$7.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$7.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$3.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$4.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$cvol$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$cvol$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$$anonfun$9.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$$anonfun$9.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	Test$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/SoungmokLew/Desktop/Test/target/scala-2.11/classes/Test$.class[0m
+[0m[[0m[0minfo[0m] [0m[0mDone packaging.[0m
