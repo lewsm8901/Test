@@ -2,25 +2,29 @@ import org.apache.commons.math3.distribution.NormalDistribution
 
 object Test extends App {
 
-  val strike = List(305, 307.5, 310, 312.5, 315, 317.5, 320, 322.5, 325, 327.5, 330)
-  val cbid = List(7.8, 5.35, 3.11, 1.37, .42, .06, .01, .00, .00, .00, .00)
-  val cask = List(7.97, 5.46, 3.13, 1.38, .43, .07, .02, .01, .01, .01, .01)
-  val pbid = List(.02, .04, .25, 1.00, 2.54, 4.66, 7.07, 9.56, 12.05, 14.4, 17.05)
-  val pask = List(.03, .05, .26, 1.01, 2.56, 4.73, 7.2, 9.68, 12.9, 14.8, 20.95)
-  val T = 6.5 / 24 / 252
-  val r = 0.005
+  val strike: List[Double] = List(305, 307.5, 310, 312.5, 315, 317.5, 320, 322.5, 325, 327.5, 330)
+  val cbid: List[Double] = List(7.8, 5.35, 3.11, 1.37, .42, .06, .01, .00, .00, .00, .00)
+  val cask: List[Double] = List(7.97, 5.46, 3.13, 1.38, .43, .07, .02, .01, .01, .01, .01)
+  val pbid: List[Double] = List(.02, .04, .25, 1.00, 2.54, 4.66, 7.07, 9.56, 12.05, 14.4, 17.05)
+  val pask: List[Double] = List(.03, .05, .26, 1.01, 2.56, 4.73, 7.2, 9.68, 12.9, 14.8, 20.95)
+  val T: Double = 6.5 / 24 / 252
+  val r: Double = 0.005
 
-  def CND(x: Double) = {
+  def CND(x: Double): Double = {
     val ND = new NormalDistribution
     ND.cumulativeProbability(x)
   }
 
-  def d1(S: Double, K: Double, sigma: Double) = {
+  def NDPrime(dOne: Double): Double ={
+    (1 / math.sqrt(2 * math.Pi)) * math.exp(-0.5 * math.pow(dOne, 2))
+  }
+
+  def d1(S: Double, K: Double, sigma: Double): Double = {
     val d1 = (math.log(S / K) + (0.005 + math.pow(sigma, 2) / 2) * T) / (sigma * math.sqrt(T))
     d1
   }
 
-  def d2(S: Double, K: Double, sigma: Double) = {
+  def d2(S: Double, K: Double, sigma: Double): Double = {
     val d2 = (math.log(S / K) + (0.005 - math.pow(sigma, 2) / 2) * T) / (sigma * math.sqrt(T))
     d2
   }
@@ -35,13 +39,14 @@ object Test extends App {
 
   def volfinder(S: Double, K: Double, price: Double, opt: String): Double = {
 
-    val initialGuess = .5
+    val initialGuess = .4
     val tolerance = 0.0001
 
     val fx = (x: Double) => BS(S, K, x, opt) - price
-    val fxPrime = (x: Double) => (BS(S, K, x + tolerance, opt) - BS(S, K, x - tolerance, opt)) / (2 * tolerance)
+    //val fxPrime = (x: Double) => (BS(S, K, x + tolerance, opt) - BS(S, K, x - tolerance, opt)) / (2 * tolerance)
+    val fxPrime = (x: Double) => S * math.exp(-r * T) * NDPrime(d1(S, K, x)) * math.sqrt(T)
 
-    val root = NRMethod(fx, fxPrime, initialGuess, tolerance)
+    val root: Double = NRMethod(fx, fxPrime, initialGuess, tolerance)
 
     root
   }
@@ -60,12 +65,12 @@ object Test extends App {
     x - fx(x) / fxPrime(x)
   }
 
-  var Sbid = 313
-  val callbid = strike.zip(cbid)
-  val putbid = strike.zip(pbid)
+  var Sbid: Double = 313
+  val callbid: List[(Double, Double)] = strike.zip(cbid)
+  val putbid: List[(Double, Double)] = strike.zip(pbid)
 
-  var callbidvollist = callbid.map{case (x, y) => volfinder(Sbid, x, y, "C")}
-  var putbidvollist = putbid.map{case (x, y) => volfinder(Sbid, x, y, "P")}
+  var callbidvollist: List[Double] = callbid.map{case (x, y) => volfinder(Sbid, x, y, "C")}
+  var putbidvollist: List[Double] = putbid.map{case (x, y) => volfinder(Sbid, x, y, "P")}
 
 //  for (i <- callbid) {
 //    callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
@@ -74,12 +79,12 @@ object Test extends App {
 //    putbidvollist = putbidvollist :+ (volfinder(Sbid, i._1, i._2, "P"))
 //  }
 
-  var Sask = 313.05
-  val callask = strike.zip(cask)
-  val putask = strike.zip(pask)
+  var Sask: Double = 313.05
+  val callask: List[(Double, Double)] = strike.zip(cask)
+  val putask: List[(Double, Double)] = strike.zip(pask)
 
-  var callaskvollist = callask.map{case (x, y) => volfinder(Sask, x, y, "C")}
-  var putaskvollist = putask.map{case (x, y) => volfinder(Sask, x, y, "P")}
+  var callaskvollist: List[Double] = callask.map{case (x, y) => volfinder(Sask, x, y, "C")}
+  var putaskvollist: List[Double] = putask.map{case (x, y) => volfinder(Sask, x, y, "P")}
 
 //  for (i <- callask) {
 //    callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
@@ -88,19 +93,19 @@ object Test extends App {
 //    putaskvollist = putaskvollist :+ (volfinder(Sask, i._1, i._2, "P"))
 //  }
 
-  val CVL = (strike zip callbidvollist) zip callaskvollist map {
+  val CVL: List[(Double, Double, Double)] = (strike zip callbidvollist) zip callaskvollist map {
     case ((x, y), z) => (x, y, z)
   }
 
-  val PVL = (strike zip putbidvollist) zip putaskvollist map {
+  val PVL: List[(Double, Double, Double)] = (strike zip putbidvollist) zip putaskvollist map {
     case ((x, y), z) => (x, y, z)
   }
 
-  def cvol(K: Double) = {
+  def cvol(K: Double): (Double, Double) = {
     (CVL.find(_._1 == K).get._2, CVL.find(_._1 == K).get._3)
   }
 
-  def pvol(K: Double) = {
+  def pvol(K: Double): (Double, Double) = {
     (PVL.find(_._1 == K).get._2, PVL.find(_._1 == K).get._3)
   }
 
