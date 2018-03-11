@@ -64,29 +64,29 @@ object Test extends App {
   val callbid = strike.zip(cbid)
   val putbid = strike.zip(pbid)
 
-  var callbidvollist = List[Double]()
-  var putbidvollist = List[Double]()
+  var callbidvollist = callbid.map{case (x, y) => {volfinder(Sbid, x, y, "C")}}
+  var putbidvollist = putbid.map{case (x, y) => {volfinder(Sbid, x, y, "P")}}
 
-  for (i <- callbid) {
-    callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
-  }
-  for (i <- putbid) {
-    putbidvollist = putbidvollist :+ (volfinder(Sbid, i._1, i._2, "P"))
-  }
+//  for (i <- callbid) {
+//    callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
+//  }
+//  for (i <- putbid) {
+//    putbidvollist = putbidvollist :+ (volfinder(Sbid, i._1, i._2, "P"))
+//  }
 
   var Sask = 313.05
   val callask = strike.zip(cask)
   val putask = strike.zip(pask)
 
-  var callaskvollist = List[Double]()
-  var putaskvollist = List[Double]()
+  var callaskvollist = callask.map{case (x, y) => {volfinder(Sask, x, y, "C")}}
+  var putaskvollist = putask.map{case (x, y) => {volfinder(Sask, x, y, "P")}}
 
-  for (i <- callask) {
-    callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
-  }
-  for (i <- putask) {
-    putaskvollist = putaskvollist :+ (volfinder(Sask, i._1, i._2, "P"))
-  }
+//  for (i <- callask) {
+//    callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
+//  }
+//  for (i <- putask) {
+//    putaskvollist = putaskvollist :+ (volfinder(Sask, i._1, i._2, "P"))
+//  }
 
   val CVL = (strike zip callbidvollist) zip callaskvollist map {
     case ((x, y), z) => (x, y, z)
@@ -105,8 +105,8 @@ object Test extends App {
   }
 
   for (i <- strike)
-    println("Strike Price : " + i + s"\nCall Bid Volatility : " + cvol(i)._1 + "Call Ask Volatility : " + cvol(i)._2 +
-      s"\nTheoretical Prices : Call Bid = " + BS(Sbid, i, cvol(i)._1, "C") + s", Call Ask = " + BS(Sask, i, cvol(i)._2, "C") +
+    println("Strike Price : " + i + s"\nCall Bid Volatility : " + cvol(i)._1 + " Call Ask Volatility : " + cvol(i)._2 +
+      s"\nCall Theoretical Prices : Call Bid = " + BS(Sbid, i, cvol(i)._1, "C") + s", Call Ask = " + BS(Sask, i, cvol(i)._2, "C") +
       s"\nTheoretical Prices : Put Bid = " + BS(Sbid, i, pvol(i)._1, "P") + s", Put Ask = " + BS(Sask, i, pvol(i)._2, "P") + "\n")
 
 }

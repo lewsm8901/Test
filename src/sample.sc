@@ -110,14 +110,14 @@ var callbidvollist = List[Double]()
 var putbidvollist = List[Double]()
 
 for (i <- callbid) {
-  callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
+  callbidvollist = callbidvollist :+ volfinder(Sbid, i._1, i._2, "C")
 }
 for (i <- putbid) {
-  putbidvollist = putbidvollist :+ (volfinder(Sbid, i._1, i._2, "P"))
+  putbidvollist = putbidvollist :+ volfinder(Sbid, i._1, i._2, "P")
 }
 
-println(callbidvollist)
-println(putbidvollist)
+//println(callbidvollist)
+//println(putbidvollist)
 
 var Sask = 313.05
 
@@ -127,23 +127,32 @@ var putaskvollist = List[Double]()
 for (i <- callask) {
   callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
 }
-for (i <- putask) {
-  putaskvollist = putaskvollist :+ (volfinder(Sask, i._1, i._2, "P"))
-}
+
+//callask.map(_._1)
+
+val calist = callask.map{case (x,y) => {volfinder(Sask, x, y, "C")}}
+
+println(calist)
 
 println(callaskvollist)
-println(putaskvollist)
 
-println(callbidvollist)
-println(putbidvollist)
+//for (i <- putask) {
+//  putaskvollist = putaskvollist :+ volfinder(Sask, i._1, i._2, "P")
+//}
 
-val CVL = (strike zip callbidvollist) zip callaskvollist map {
-  case((x, y), z) => (x, y, z)
-}
 
-val PVL = (strike zip putbidvollist) zip putaskvollist map {
-  case((x, y), z) => (x, y, z)
-}
+//println(putaskvollist)
+//
+//println(callbidvollist)
+//println(putbidvollist)
+
+//val CVL = (strike zip callbidvollist) zip callaskvollist map {
+//  case((x, y), z) => (x, y, z)
+//}
+
+//val PVL = (strike zip putbidvollist) zip putaskvollist map {
+//  case((x, y), z) => (x, y, z)
+//}
 
 //def vol(K: Double, CP: String, ba: String) = {
 //  if(CP== "C") {
@@ -167,13 +176,16 @@ val PVL = (strike zip putbidvollist) zip putaskvollist map {
 //  }
 //}
 
-def cvol(K: Double) ={
-  (CVL.find(_._1 == K).get._2, CVL.find(_._1 == K).get._3)
-}
+//def cvol(K: Double) ={
+//  (CVL.find(_._1 == K).get._2, CVL.find(_._1 == K).get._3)
+//}
+
+//println(s"option price = ${BS(313, 305, .45, "C")}")
 
 
-for(i <- strike)
-  println("Strike Price: " + i + "\nCall Bid Volatility: " + cvol(i)._1 + ", Call Ask Volatility: " + cvol(i)._2 + BigDecimal(BS(313, 312.5, cvol(317.5)._1, "C")).setScale(2, BigDecimal.RoundingMode.HALF_UP))
+
+//for(i <- strike)
+//  println("Strike Price: " + i + "\nCall Bid Volatility: " + cvol(i)._1 + ", Call Ask Volatility: " + cvol(i)._2 + BigDecimal(BS(313, 312.5, cvol(317.5)._1, "C")).setScale(2, BigDecimal.RoundingMode.HALF_UP))
 
 //for (i <- strike)
 //  println("Strike Price : " + i + s"\nCall Bid Volatility : " + BigDecimal(cvol(i)._1).setScale(2, BigDecimal.RoundingMode.HALF_UP) + "Call Ask Volatility : " + cvol(i)._2 +
