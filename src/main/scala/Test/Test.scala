@@ -31,13 +31,8 @@ object Test extends App {
 
   def BS(S: Double, K: Double, sigma: Double, opt: String): Double = {
     opt match {
-      case "C" => {
-        S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
-      }
-      case "P" => {
-        K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
-      }
-
+      case "C" => S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
+      case "P" => K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
     }
 //    if (opt == "C") {
 //      S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
@@ -127,4 +122,22 @@ object Test extends App {
       s"\nCall Theoretical Prices : Call Bid = ${BS(Sbid, x, cvol(x)._1, "C")}, Call Ask = ${BS(Sask, x, cvol(x)._2, "C")}" +
       s"\nTheoretical Prices : Put Bid = ${BS(Sbid, x, pvol(x)._1, "P")}, Put Ask = ${BS(Sask, x, pvol(x)._2, "P")} \n")
   )
+
+  //Greeks
+  def calldelta(S: Double, K: Double, sigma: Double): Double = {
+    math.exp(-r * T) * CND(d1(S, K, sigma))
+  }
+
+  def putdelta(S: Double, K: Double, sigma: Double): Double = {
+    math.exp(-r * T) * (CND(d1(S, K, sigma)) - 1)
+  }
+
+  def vega(S: Double, K: Double, sigma: Double):Double = {
+    S * math.exp(-r * T) * NDPrime(d1(S, K, sigma)) * math.sqrt(T)
+  }
+
+  def gamma(S: Double, K: Double, sigma: Double): Double = {
+    (math.exp(-r * T)* NDPrime(d1(S, K, sigma))) / (S * sigma * math.sqrt(T))
+  }
+
 }
