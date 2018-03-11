@@ -124,11 +124,11 @@ object Test extends App {
   )
 
   //Greeks
-  def calldelta(S: Double, K: Double, sigma: Double): Double = {
+  def deltacall(S: Double, K: Double, sigma: Double): Double = {
     math.exp(-r * T) * CND(d1(S, K, sigma))
   }
 
-  def putdelta(S: Double, K: Double, sigma: Double): Double = {
+  def deltaput(S: Double, K: Double, sigma: Double): Double = {
     math.exp(-r * T) * (CND(d1(S, K, sigma)) - 1)
   }
 
@@ -138,6 +138,14 @@ object Test extends App {
 
   def gamma(S: Double, K: Double, sigma: Double): Double = {
     (math.exp(-r * T)* NDPrime(d1(S, K, sigma))) / (S * sigma * math.sqrt(T))
+  }
+
+  def thetacall(S: Double, K: Double, sigma: Double): Double = {
+    -(S * math.exp(-r * T) * NDPrime(d1(S, K, sigma)) * sigma) / (2 * math.sqrt(T)) + r * S * math.exp(-r * T) * CND(d1(S, K, sigma)) - r * S * math.exp(-r * T) * CND(d2(S, K, sigma))
+  }
+
+  def thetaput(S: Double, K: Double, sigma: Double): Double = {
+    -(S * math.exp(-r * T) * NDPrime(d1(S, K, sigma)) * sigma) / (2 * math.sqrt(T)) - r * S * math.exp(-r * T) * CND(-d1(S, K, sigma)) + r * S * math.exp(-r * T) * CND(-d2(S, K, sigma))
   }
 
 }
