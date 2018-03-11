@@ -30,11 +30,20 @@ object Test extends App {
   }
 
   def BS(S: Double, K: Double, sigma: Double, opt: String): Double = {
-    if (opt == "C") {
-      S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
-    } else {
-      K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
+    opt match {
+      case "C" => {
+        S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
+      }
+      case "P" => {
+        K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
+      }
+
     }
+//    if (opt == "C") {
+//      S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
+//    } else {
+//      K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
+//    }
   }
 
   def volfinder(S: Double, K: Double, price: Double, opt: String): Double = {
