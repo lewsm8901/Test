@@ -64,8 +64,8 @@ object Test extends App {
   val callbid = strike.zip(cbid)
   val putbid = strike.zip(pbid)
 
-  var callbidvollist = callbid.map{case (x, y) => {volfinder(Sbid, x, y, "C")}}
-  var putbidvollist = putbid.map{case (x, y) => {volfinder(Sbid, x, y, "P")}}
+  var callbidvollist = callbid.map{case (x, y) => volfinder(Sbid, x, y, "C")}
+  var putbidvollist = putbid.map{case (x, y) => volfinder(Sbid, x, y, "P")}
 
 //  for (i <- callbid) {
 //    callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
@@ -78,8 +78,8 @@ object Test extends App {
   val callask = strike.zip(cask)
   val putask = strike.zip(pask)
 
-  var callaskvollist = callask.map{case (x, y) => {volfinder(Sask, x, y, "C")}}
-  var putaskvollist = putask.map{case (x, y) => {volfinder(Sask, x, y, "P")}}
+  var callaskvollist = callask.map{case (x, y) => volfinder(Sask, x, y, "C")}
+  var putaskvollist = putask.map{case (x, y) => volfinder(Sask, x, y, "P")}
 
 //  for (i <- callask) {
 //    callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
@@ -104,9 +104,13 @@ object Test extends App {
     (PVL.find(_._1 == K).get._2, PVL.find(_._1 == K).get._3)
   }
 
-  for (i <- strike)
-    println("Strike Price : " + i + s"\nCall Bid Volatility : " + cvol(i)._1 + " Call Ask Volatility : " + cvol(i)._2 +
-      s"\nCall Theoretical Prices : Call Bid = " + BS(Sbid, i, cvol(i)._1, "C") + s", Call Ask = " + BS(Sask, i, cvol(i)._2, "C") +
-      s"\nTheoretical Prices : Put Bid = " + BS(Sbid, i, pvol(i)._1, "P") + s", Put Ask = " + BS(Sask, i, pvol(i)._2, "P") + "\n")
+//  for (i <- strike)
+//    println("Strike Price : " + i + s"\nCall Bid Volatility : " + cvol(i)._1 + " Call Ask Volatility : " + cvol(i)._2 +
+//      s"\nCall Theoretical Prices : Call Bid = " + BS(Sbid, i, cvol(i)._1, "C") + s", Call Ask = " + BS(Sask, i, cvol(i)._2, "C") +
+//      s"\nTheoretical Prices : Put Bid = " + BS(Sbid, i, pvol(i)._1, "P") + s", Put Ask = " + BS(Sask, i, pvol(i)._2, "P") + "\n")
 
+  strike.map(x => println("Strike Price : " + x + s"\nCall Bid Volatility : ${cvol(x)._1} Call Ask Volatility : ${cvol(x)._2}" +
+      s"\nCall Theoretical Prices : Call Bid = ${BS(Sbid, x, cvol(x)._1, "C")}, Call Ask = ${BS(Sask, x, cvol(x)._2, "C")}" +
+      s"\nTheoretical Prices : Put Bid = ${BS(Sbid, x, pvol(x)._1, "P")}, Put Ask = ${BS(Sask, x, pvol(x)._2, "P")} \n")
+  )
 }
