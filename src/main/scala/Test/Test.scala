@@ -39,7 +39,7 @@ object Test extends App {
   def callvolfinder(S: Double, K: Double, price: Double): Double = {
 
     val initialGuess = .5
-    val tolerance = 0.0001
+    val tolerance = 0.000001
 
     val fx = (x: Double) => BS(S, K, x, "C") - S + K * math.exp(-r * T) - price
     val fxPrime = (x: Double) => S * NDPrime(d1(S, K, x)) * math.sqrt(T)
@@ -51,8 +51,8 @@ object Test extends App {
 
   def putvolfinder(S: Double, K: Double, price: Double): Double = {
 
-    val initialGuess = .3
-    val tolerance = 0.0001
+    val initialGuess = .5
+    val tolerance = 0.000001
 
     val fx = (x: Double) => BS(S, K, x, "P") + S - K * math.exp(-r * T) - price
     val fxPrime = (x: Double) => S * NDPrime(d1(S, K, x)) * math.sqrt(T)
