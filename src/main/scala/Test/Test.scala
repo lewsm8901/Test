@@ -38,7 +38,7 @@ object Test extends App {
 
   def callvolfinder(S: Double, K: Double, price: Double): Double = {
 
-    val initialGuess = .3
+    val initialGuess = .5
     val tolerance = 0.0001
 
     val fx = (x: Double) => BS(S, K, x, "C") - S + K * math.exp(-r * T) - price
