@@ -34,21 +34,28 @@ object Test extends App {
       case "C" => S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
       case "P" => K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
     }
-//    if (opt == "C") {
-//      S * CND(d1(S, K, sigma)) - K * math.exp(-r * T) * CND(d2(S, K, sigma))
-//    } else {
-//      K * math.exp(-r * T) * CND(-d2(S, K, sigma)) - S * CND(-d1(S, K, sigma))
-//    }
   }
 
-  def volfinder(S: Double, K: Double, price: Double, opt: String): Double = {
+  def callvolfinder(S: Double, K: Double, price: Double): Double = {
 
-    val initialGuess = .4
+    val initialGuess = .3
     val tolerance = 0.0001
 
-    val fx = (x: Double) => BS(S, K, x, opt) - price
-    //val fxPrime = (x: Double) => (BS(S, K, x + tolerance, opt) - BS(S, K, x - tolerance, opt)) / (2 * tolerance)
-    val fxPrime = (x: Double) => S * math.exp(-r * T) * NDPrime(d1(S, K, x)) * math.sqrt(T)
+    val fx = (x: Double) => BS(S, K, x, "C") - S + K * math.exp(-r * T) - price
+    val fxPrime = (x: Double) => S * NDPrime(d1(S, K, x)) * math.sqrt(T)
+
+    val root: Double = NRMethod(fx, fxPrime, initialGuess, tolerance)
+
+    root
+  }
+
+  def putvolfinder(S: Double, K: Double, price: Double): Double = {
+
+    val initialGuess = .3
+    val tolerance = 0.0001
+
+    val fx = (x: Double) => BS(S, K, x, "P") + S - K * math.exp(-r * T) - price
+    val fxPrime = (x: Double) => S * NDPrime(d1(S, K, x)) * math.sqrt(T)
 
     val root: Double = NRMethod(fx, fxPrime, initialGuess, tolerance)
 
@@ -73,29 +80,15 @@ object Test extends App {
   val callbid: List[(Double, Double)] = strike.zip(cbid)
   val putbid: List[(Double, Double)] = strike.zip(pbid)
 
-  var callbidvollist: List[Double] = callbid.map{case (x, y) => volfinder(Sbid, x, y, "C")}
-  var putbidvollist: List[Double] = putbid.map{case (x, y) => volfinder(Sbid, x, y, "P")}
-
-//  for (i <- callbid) {
-//    callbidvollist = callbidvollist :+ (volfinder(Sbid, i._1, i._2, "C"))
-//  }
-//  for (i <- putbid) {
-//    putbidvollist = putbidvollist :+ (volfinder(Sbid, i._1, i._2, "P"))
-//  }
+  var callbidvollist: List[Double] = putbid.map{case (x, y) => callvolfinder(Sbid, x, y)}
+  var putbidvollist: List[Double] = callbid.map{case (x, y) => putvolfinder(Sbid, x, y)}
 
   var Sask: Double = 313.05
   val callask: List[(Double, Double)] = strike.zip(cask)
   val putask: List[(Double, Double)] = strike.zip(pask)
 
-  var callaskvollist: List[Double] = callask.map{case (x, y) => volfinder(Sask, x, y, "C")}
-  var putaskvollist: List[Double] = putask.map{case (x, y) => volfinder(Sask, x, y, "P")}
-
-//  for (i <- callask) {
-//    callaskvollist = callaskvollist :+ (volfinder(Sask, i._1, i._2, "C"))
-//  }
-//  for (i <- putask) {
-//    putaskvollist = putaskvollist :+ (volfinder(Sask, i._1, i._2, "P"))
-//  }
+  var callaskvollist: List[Double] = putask.map{case (x, y) => callvolfinder(Sask, x, y)}
+  var putaskvollist: List[Double] = callask.map{case (x, y) => putvolfinder(Sask, x, y)}
 
   val CVL: List[(Double, Double, Double)] = (strike zip callbidvollist) zip callaskvollist map {
     case ((x, y), z) => (x, y, z)
@@ -113,12 +106,8 @@ object Test extends App {
     (PVL.find(_._1 == K).get._2, PVL.find(_._1 == K).get._3)
   }
 
-//  for (i <- strike)
-//    println("Strike Price : " + i + s"\nCall Bid Volatility : " + cvol(i)._1 + " Call Ask Volatility : " + cvol(i)._2 +
-//      s"\nCall Theoretical Prices : Call Bid = " + BS(Sbid, i, cvol(i)._1, "C") + s", Call Ask = " + BS(Sask, i, cvol(i)._2, "C") +
-//      s"\nTheoretical Prices : Put Bid = " + BS(Sbid, i, pvol(i)._1, "P") + s", Put Ask = " + BS(Sask, i, pvol(i)._2, "P") + "\n")
-
   strike.map(x => println("Strike Price : " + x + s"\nCall Bid Volatility : ${cvol(x)._1} Call Ask Volatility : ${cvol(x)._2}" +
+      s"\nPut Bid Volatility : ${pvol(x)._1} Put Ask Volatility : ${pvol(x)._2}" +
       s"\nCall Theoretical Prices : Call Bid = ${BS(Sbid, x, cvol(x)._1, "C")}, Call Ask = ${BS(Sask, x, cvol(x)._2, "C")}" +
       s"\nTheoretical Prices : Put Bid = ${BS(Sbid, x, pvol(x)._1, "P")}, Put Ask = ${BS(Sask, x, pvol(x)._2, "P")} \n")
   )
@@ -133,7 +122,7 @@ object Test extends App {
   }
 
   def vega(S: Double, K: Double, sigma: Double):Double = {
-    S * math.exp(-r * T) * NDPrime(d1(S, K, sigma)) * math.sqrt(T)
+    S * NDPrime(d1(S, K, sigma)) * math.sqrt(T)
   }
 
   def gamma(S: Double, K: Double, sigma: Double): Double = {
